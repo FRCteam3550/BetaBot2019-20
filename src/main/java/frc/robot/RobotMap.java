@@ -8,6 +8,9 @@
 package frc.robot;
 
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
+import com.ctre.phoenix.motorcontrol.can.TalonSRX;
+
+import edu.wpi.first.wpilibj.Encoder;
 
 /**
  * The RobotMap is a mapping from the ports sensors and actuators are wired into
@@ -30,13 +33,25 @@ public class RobotMap {
 
   // TODO : Find out what we are using for the speed controllers
 
-  public static final int m_MotorLeftFront = 0;
-  public static final int m_MotorRightFront = 1;
-  public static final int m_MotorLeftBack = 2;
-  public static final int m_MotorRightBack = 3;
+ // public static final int m_MotorLeftFront = 0;
+  public static final int m_MotorRight = 2;
+  public static final int m_MotorLeft = 1;
+ // public static final int m_MotorRightBack = 3;
 
   public static final int m_PlateSensor = 0;
-  public static final int m_PlateMotor = 4;
+  public static final int m_PlateMotor = 3;
+
+  public static final int m_WedgerMotor = 12;
+ // public static final int m_WedgerMobile = 7;
+  
+  // There are 90 motor turns in one pulse of this encoder, but how many do we need to turn the arm?
+  public static final Encoder m_ArmEncoder = new Encoder(2,3);
+
+  // This part is from 2019, do not use in comp, or else >=(
+    //wedger
+   // public static TalonSRX detroit2019wedgerMotor;
+    //Grabber
+   // public static TalonSRX detroit2019wedgerMobile;
 
  
 }

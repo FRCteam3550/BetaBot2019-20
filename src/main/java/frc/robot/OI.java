@@ -9,6 +9,13 @@ package frc.robot;
 
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.buttons.JoystickButton;
+import edu.wpi.first.wpilibj.buttons.Button;
+
+//This is a list of test imports, please remove later
+import frc.robot.detroit2019testcode.commands.WadgerInitial;
+import frc.robot.detroit2019testcode.commands.WedgerPos1;
+import frc.robot.detroit2019testcode.PIDsettings.*;
 
 /**
  * This class is the glue that binds the controls on the physical operator
@@ -43,12 +50,12 @@ public class OI {
   // until it is finished as determined by it's isFinished method.
   // button.whenReleased(new ExampleCommand());
 
-  // sachant qu'ils sont initialisé dans le constructeurs, ils ne devraient pas être final.
-  // TODO : Voir si on peut créer des joysticks sans constructeurs
   private final Joystick m_DriverJoystick;
   private final Joystick m_CoDriverJoystick;
   private final XboxController m_DriverXbox;
   private final XboxController m_CoDriverXbox;
+
+  
 
   public OI() {
     // TODO : Learn what controller we are using / if we have more than one Xbox controller
@@ -56,5 +63,12 @@ public class OI {
     m_CoDriverJoystick = new Joystick (1);
     m_DriverXbox = new XboxController(2);
     m_CoDriverXbox = new XboxController(3);
+
+  // wedger
+  Button b8 = new JoystickButton(m_CoDriverJoystick, 1);
+  b8.whenPressed(new WadgerInitial(Constants.Wedger0));
+
+  Button b9 = new JoystickButton(m_CoDriverJoystick, 2);
+  b9.whenPressed(new WedgerPos1(Constants.Wedger1));
   }
 }

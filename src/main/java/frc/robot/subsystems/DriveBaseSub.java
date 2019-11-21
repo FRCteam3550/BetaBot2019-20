@@ -27,31 +27,22 @@ public class DriveBaseSub extends Subsystem {
 
   private final DifferentialDrive m_DiffDrive;
 
-  private final SpeedController m_MotorLeftFront;
-  private final SpeedController m_MotorRightFront;
-  private final SpeedController m_MotorLeftBack;
-  private final SpeedController m_MotorRightBack;
-
-  private final SpeedControllerGroup m_Left;
-  private final SpeedControllerGroup m_Right;
+  private final SpeedController m_MotorLeft;
+  private final SpeedController m_MotorRight;
 
   
 
   public DriveBaseSub() { // init some stuff
 
-    m_MotorLeftFront = new WPI_TalonSRX(RobotMap.m_MotorLeftFront);
-    m_MotorRightFront = new WPI_TalonSRX(RobotMap.m_MotorRightFront);
-    m_MotorLeftBack = new WPI_TalonSRX(RobotMap.m_MotorLeftBack);
-    m_MotorRightBack = new WPI_TalonSRX(RobotMap.m_MotorRightBack);
+    m_MotorLeft = new WPI_TalonSRX(RobotMap.m_MotorLeft);
+    m_MotorRight = new WPI_TalonSRX(RobotMap.m_MotorRight);
 
-    m_Left = new SpeedControllerGroup(m_MotorLeftFront, m_MotorLeftBack);
-    m_Right = new SpeedControllerGroup(m_MotorRightFront, m_MotorRightBack);
 
 
     //m_MotorLeftF.setInverted(false); // TODO : Find out if we need to invert it
    // m_MotorRight = RobotMap.m_MotorRight;
    // m_MotorRight.setInverted(false); // TODO : Find out if we need to invert it
-    m_DiffDrive = new DifferentialDrive(m_Left, m_Right); 
+    m_DiffDrive = new DifferentialDrive(m_MotorLeft, m_MotorRight); 
   }
 
   public void arcadeDrive (double DriveSpeed, double DriveRotation) {

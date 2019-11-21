@@ -1,0 +1,12 @@
+The goal of ControllerTronix is to allow to easily change keybindings
+when working with multiples controllers. It has support a pilot and a 
+copilot, and should be able to handle the amount of button on the
+controller with the least amount of button
+
+**************************************Warning**************************************
+--    When the command system will be updated, it will conflict and will break   --
+***********************************************************************************
+
+
+ideas : 
+ - How to handle buttons =D
