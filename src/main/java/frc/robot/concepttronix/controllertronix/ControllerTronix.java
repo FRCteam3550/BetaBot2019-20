@@ -29,58 +29,66 @@ public class ControllerTronix {
     //Initializer
     //private GenericHID[] controllers;
     //private String[] controllersType;
-    private ArrayList<GenericHID> controllers;
-    private ArrayList<String> controllersType;
-    private int currentController;
-
-    //Pilote et copilote
-    //private int[] currentPilotes;
-    //private int[] currentCoPilotes;
-    private ArrayList<Integer> currentPilotes;
-    private ArrayList<Integer> currentCoPilotes;
-
-    private ArrayList<Command> currentRunnableCommands;
-    private ArrayList<> currentPilote
+    private ArrayList<GenericHID> m_controller;
+    private ArrayList<String> m_controllerType;
+    private ArrayList<Integer> m_controllerMaxButton;
+    private int m_currentController;
+    private ArrayList<int[]> m_controllerCommandManager;
 
 
-    public ControllerTronix (int MaxController, int MaxCommands) {
-        controllers = new ArrayList<GenericHID>();
-        controllers.ensureCapacity(MaxController);
-        controllersType = new ArrayList<String>();
-        controllersType.ensureCapacity(MaxController);
-        currentController = 0;
+    private ArrayList<Command> m_currentRunnableCommands;
+    private int m_currentCommandId;
 
-        currentPilotes = new ArrayList<Integer>();
-        currentPilotes.ensureCapacity(MaxController);
-        currentCoPilotes = new ArrayList<Integer>();
-        currentCoPilotes.ensureCapacity(MaxController);
+
+    public ControllerTronix () {
+        //Setup all controllers
+        m_controller = new ArrayList<GenericHID>();
+        m_controllerType = new ArrayList<String>();
+        m_controllerMaxButton = new ArrayList<Integer>();
+        m_currentController = 0;
+
+        //Set Commands
+        m_currentRunnableCommands = new ArrayList<Command>();
+        m_currentCommandId = 0;
+        m_controllerCommandManager = new ArrayList<int[]>();
     }
 
     /**
      *  Since Joysticks are not supposed to be deleted, add all possible joystick ports.
      *  ** IN THE FUTURE : Check for a dynamic way to do this, without all of the missing controllers
-     * @param type For now, only Joystick will work, might remove later idk
-     * @param port
+     * @param type Currently supported : Joystick. Your choice will be ignored
+     * @param port The port of the controller
+     * @param maxButton The max amount of virtual buttons. You should set it to the max amount of buttons on the controller, but you can put it lower if you know you will not use all of the buttons available
      * @return
      */
-    public int addNewControlMethod (String type, int port) {
+    public int addNewControlMethod (String controllerType, int port, int maxButton) {
         int controllerId = -1;
+        String type = "Joystick"; //ignore everything else
         switch (type) {
             case "Joystick" : {
                 Joystick newJoy = new Joystick(port);
-                controllers.add(newJoy);
-                controllersType.add(type);
-                controllerId = currentController;
 
-                setupJoystick(newJoy);
+                m_controller.ensureCapacity(m_currentController+1);
+                m_controller.add(newJoy);
 
-                currentController++;
+                m_controllerType.ensureCapacity(m_currentController+1);
+                m_controllerType.add(type);
+
+                m_controllerMaxButton.ensureCapacity(m_currentController+1);
+                m_controllerMaxButton.add(maxButton);
+
+                m_controllerCommandManager.ensureCapacity(m_currentController+1);
+                m_controllerCommandManager.add(new int[maxButton+1]);
+
+                controllerId = m_currentController;
+                resetControllerBinding(m_currentController);
+
+                //setupJoystick(newJoy); //SetupJoystick should not be here
+
+                m_currentController++;
             }
-            case "Xbox" : { // DO NOT ADD RIGHT NOW
-                controllers.add(new XboxController(port));
-                controllersType.add(type);
-                controllerId = currentController;
-                currentController++;
+            case "Xbox" : {
+                //Since gamepads are concidered joysticks, we should ignore that value for now
             }
             default : {
                 //Do nothing, might want to add an error handling
@@ -89,41 +97,85 @@ public class ControllerTronix {
         return controllerId; //Return the id of the controller
     }
 
-    public void addToPilot (int id) {
+    public GenericHID getControllerFromId(int ControllerId) {
+        return m_controller.get(ControllerId);
+    }
+
+    /**
+     * Removed since we are no longer using the Pilot CoPilot Formula (Was to complicated, tbh)
+    public void addControllerToPilot (int id) {
         currentPilotes.add(id);
     }
 
-    public void resetPilotes () {
+    public void resetPiloteController () {
         currentPilotes.clear();
     }
     
-    public void addToCoPilot (int id) {
+    public void addControllerToCoPilot (int id) {
         currentCoPilotes.add(id);
     }
 
-    public void resetCoPilotes () {
+    public void resetCoPiloteController () {
         currentCoPilotes.clear();
     }
+    */
+    public int addCommand (Command command) {
+        m_currentRunnableCommands.add(m_currentCommandId,command);
+        m_currentCommandId++;
+        return m_currentCommandId - 1;
+    }
 
+    public void resetBindings () {
+        for (int i = 0; i < m_controllerCommandManager.size(); i++) { //this should remove all of the commands everywhere
+            
+            int[] ToClear = m_controllerCommandManager.get(i);
+            //since we know that i is the commandId
+            int ButtonAmount = m_controllerMaxButton.get(i);
+            for (int j = 0; j <= ButtonAmount; j++) {
+                ToClear[j] = -1;
+            }
+            m_controllerCommandManager.set(i,ToClear);
+        }
+    }
 
-    private void setupJoystick(Joystick joy) { //tons of buttons, so little time
-        JoystickButton b1 = new JoystickButton(joy,1);
-        b1.whenPressed(new JoystickButton1PressedCmd());
-        JoystickButton b2 = new JoystickButton(joy,1);
-        b2.whenPressed(new JoystickButton1PressedCmd());
-        JoystickButton b3 = new JoystickButton(joy,1);
-        b3.whenPressed(new JoystickButton1PressedCmd());
-        JoystickButton b4 = new JoystickButton(joy,1);
-        b4.whenPressed(new JoystickButton1PressedCmd());
-        JoystickButton b5 = new JoystickButton(joy,1);
-        b5.whenPressed(new JoystickButton1PressedCmd());
-        JoystickButton b6 = new JoystickButton(joy,1);
-        b6.whenPressed(new JoystickButton1PressedCmd());
-        JoystickButton b7 = new JoystickButton(joy,1);
-        b7.whenPressed(new JoystickButton1PressedCmd());
-        JoystickButton b8 = new JoystickButton(joy,1);
-        b8.whenPressed(new JoystickButton1PressedCmd());
-        JoystickButton b9 = new JoystickButton(joy,1);
-        b9.whenPressed(new JoystickButton1PressedCmd());
+    public void resetControllerBinding (int ControllerId) {
+        int[] ToClear = m_controllerCommandManager.get(ControllerId);
+        int ButtonAmount = m_controllerMaxButton.get(ControllerId);
+        for (int j = 0; j <= ButtonAmount; j++) {
+            ToClear[j] = -1;
+        }
+        m_controllerCommandManager.set(ControllerId,ToClear);
+    }
+
+    /**
+     * @param ControllerId
+     * @param CommandId
+     * @param VirtualButtonId
+     */
+    public void bindCommand (int ControllerId, int CommandId, int VirtualButtonId) {
+        int[] ButtonArray = m_controllerCommandManager.get(ControllerId);
+        ButtonArray[VirtualButtonId] = CommandId;
+        m_controllerCommandManager.set(ControllerId, ButtonArray);
+    }
+
+    public Command getCommandFromButton (int ControllerId, int VirtualButtonId) {
+        int[] buttonArray = m_controllerCommandManager.get(ControllerId);
+        Command ReturnCommand;
+        if (buttonArray[VirtualButtonId] != -1) {
+            ReturnCommand = m_currentRunnableCommands.get(buttonArray[VirtualButtonId]);
+        } else {
+            ReturnCommand = new EmptyCommand();
+        }
+        return ReturnCommand;
+    }
+
+    private void setupJoystickPressedButton(int ControllerId, int RealButtonId) { //tons of buttons, so little time
+        JoystickButton button = new JoystickButton(getControllerFromId(ControllerId),RealButtonId);
+        button.whenPressed(new ButtonPressedCmd(ControllerId, RealButtonId, this));
+    }
+
+    private void setupJoystickPressedButton(int ControllerId, int RealbuttonId, int VirtualButtonId) { //tons of buttons, so little time
+        JoystickButton button = new JoystickButton(getControllerFromId(ControllerId),RealbuttonId);
+        button.whenPressed(new ButtonPressedCmd(ControllerId, VirtualButtonId, this));
     }
 }
