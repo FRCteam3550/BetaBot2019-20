@@ -5,49 +5,40 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-package frc.robot.concepttronix.controllertronix.commands;
+package frc.robot.commands.TestControllerCmd;
 
 import edu.wpi.first.wpilibj.command.Command;
-import frc.robot.concepttronix.controllertronix.ControllerTronix;
 
-public class ButtonPressedCmd extends Command {
-  private int m_ControllerId;
-  private int m_ButtonId;
-  private ControllerTronix m_Controller;
-  private Boolean m_Finished;
+import frc.robot.subsystems.testControllerSub;
+import frc.robot.Robot;
 
-  /**
-   * Add your docs here.
-   */
-  public ButtonPressedCmd (int ControllerId, int ButtonId, ControllerTronix Controller) {
-    m_ControllerId = ControllerId;
-    m_ButtonId = ButtonId;
-    m_Controller = Controller;
-    m_Finished = false;
+public class TestSwitchMainJoyCmd extends Command {
+  public TestSwitchMainJoyCmd() {
+    // Use requires() here to declare subsystem dependencies
+    // eg. requires(chassis);
+    requires(Robot.m_TestConSub);
   }
 
   // Called just before this Command runs the first time
   @Override
   protected void initialize() {
+    Robot.m_TestConSub.switchToNext();
   }
 
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    m_Controller.getCommandFromButton(m_ControllerId, m_ButtonId).start();
-    m_Finished = true;
   }
 
   // Make this return true when this Command no longer needs to run execute()
   @Override
   protected boolean isFinished() {
-    return m_Finished;
+    return true;
   }
 
   // Called once after isFinished returns true
   @Override
   protected void end() {
-    m_Finished = false;
   }
 
   // Called when another command which requires one or more of the same

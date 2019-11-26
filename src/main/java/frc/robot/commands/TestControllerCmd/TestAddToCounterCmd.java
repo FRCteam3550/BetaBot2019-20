@@ -5,49 +5,47 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-package frc.robot.concepttronix.controllertronix.commands;
+package frc.robot.commands.TestControllerCmd;
 
 import edu.wpi.first.wpilibj.command.Command;
-import frc.robot.concepttronix.controllertronix.ControllerTronix;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.robot.subsystems.testControllerSub;
+import frc.robot.Robot;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
-public class ButtonPressedCmd extends Command {
-  private int m_ControllerId;
-  private int m_ButtonId;
-  private ControllerTronix m_Controller;
-  private Boolean m_Finished;
+public class TestAddToCounterCmd extends Command {
 
-  /**
-   * Add your docs here.
-   */
-  public ButtonPressedCmd (int ControllerId, int ButtonId, ControllerTronix Controller) {
-    m_ControllerId = ControllerId;
-    m_ButtonId = ButtonId;
-    m_Controller = Controller;
-    m_Finished = false;
+  Boolean m_finished = false;
+  public TestAddToCounterCmd() {
+    // Use requires() here to declare subsystem dependencies
+    // eg. requires(chassis);
+    requires(Robot.m_TestConSub);
   }
 
   // Called just before this Command runs the first time
   @Override
   protected void initialize() {
-  }
+    double test111 = SmartDashboard.getNumber("Test111", 0);
+    test111++;
+    SmartDashboard.putNumber("Test111",test111);
+    }
 
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    m_Controller.getCommandFromButton(m_ControllerId, m_ButtonId).start();
-    m_Finished = true;
+    Robot.m_TestConSub.addToDisplay(1);
+    m_finished = true;
   }
 
   // Make this return true when this Command no longer needs to run execute()
   @Override
   protected boolean isFinished() {
-    return m_Finished;
+    return m_finished;
   }
 
   // Called once after isFinished returns true
   @Override
   protected void end() {
-    m_Finished = false;
   }
 
   // Called when another command which requires one or more of the same

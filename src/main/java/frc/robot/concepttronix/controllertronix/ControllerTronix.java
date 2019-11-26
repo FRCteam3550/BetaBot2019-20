@@ -86,6 +86,8 @@ public class ControllerTronix {
                 //setupJoystick(newJoy); //SetupJoystick should not be here
 
                 m_currentController++;
+
+                break;
             }
             case "Xbox" : {
                 //Since gamepads are concidered joysticks, we should ignore that value for now
@@ -169,13 +171,15 @@ public class ControllerTronix {
         return ReturnCommand;
     }
 
-    private void setupJoystickPressedButton(int ControllerId, int RealButtonId) { //tons of buttons, so little time
+    public void setupJoystickPressedButton(int ControllerId, int RealButtonId) { //tons of buttons, so little time
         JoystickButton button = new JoystickButton(getControllerFromId(ControllerId),RealButtonId);
         button.whenPressed(new ButtonPressedCmd(ControllerId, RealButtonId, this));
+        button.close();//Test with and without
     }
 
-    private void setupJoystickPressedButton(int ControllerId, int RealbuttonId, int VirtualButtonId) { //tons of buttons, so little time
+    public void setupJoystickPressedButton(int ControllerId, int RealbuttonId, int VirtualButtonId) { //tons of buttons, so little time
         JoystickButton button = new JoystickButton(getControllerFromId(ControllerId),RealbuttonId);
         button.whenPressed(new ButtonPressedCmd(ControllerId, VirtualButtonId, this));
+        button.close();//Test with and without
     }
 }
