@@ -9,6 +9,16 @@ package frc.robot;
 
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.buttons.JoystickButton;
+import edu.wpi.first.wpilibj.buttons.Button;
+
+import frc.robot.concepttronix.controllertronix.ControllerTronix;
+
+//This is a list of test imports, please remove later
+import frc.robot.detroit2019testcode.commands.WadgerInitial;
+import frc.robot.detroit2019testcode.commands.WedgerPos1;
+import frc.robot.detroit2019testcode.PIDsettings.*;
+import frc.robot.commands.TestControllerCmd.*;
 
 /**
  * This class is the glue that binds the controls on the physical operator
@@ -43,18 +53,76 @@ public class OI {
   // until it is finished as determined by it's isFinished method.
   // button.whenReleased(new ExampleCommand());
 
-  // sachant qu'ils sont initialisé dans le constructeurs, ils ne devraient pas être final.
-  // TODO : Voir si on peut créer des joysticks sans constructeurs
+  /**
   private final Joystick m_DriverJoystick;
   private final Joystick m_CoDriverJoystick;
   private final XboxController m_DriverXbox;
   private final XboxController m_CoDriverXbox;
 
+  
+
   public OI() {
-    // TODO : Learn what controller we are using / if we have more than one Xbox controller
+    // TODO : Learn what controller we are using / if we have more than one Xbox controlle
     m_DriverJoystick = new Joystick(0);
     m_CoDriverJoystick = new Joystick (1);
     m_DriverXbox = new XboxController(2);
     m_CoDriverXbox = new XboxController(3);
+
+  // wedger
+  Button b8 = new JoystickButton(m_CoDriverJoystick, 1);
+  b8.whenPressed(new WadgerInitial(Constants.Wedger0));
+
+  Button b9 = new JoystickButton(m_CoDriverJoystick, 2);
+  b9.whenPressed(new WedgerPos1(Constants.Wedger1));
   }
+  */
+
+
+  public ControllerTronix m_controllerManager;
+  public int m_JoystickId1;
+  public int m_JoystickId2;
+  public int m_JoystickId3;
+
+  public int m_AddToCounterCmd;
+  public int m_RemoveToCounterCmd;
+  public int m_SwitchJoyCmd;
+  public int m_MainAddToCounterCmd;
+  public int m_MainRemoveToCounterCmd;
+
+  public OI () {
+    m_controllerManager = new ControllerTronix();
+    m_JoystickId1 = m_controllerManager.addNewControlMethod("Joystick", 0, 12);
+    m_JoystickId2 = m_controllerManager.addNewControlMethod("Joystick", 1, 12);
+    m_JoystickId3 = m_controllerManager.addNewControlMethod("Joystick", 2, 12);
+
+    m_AddToCounterCmd = m_controllerManager.addCommand(new TestAddToCounterCmd());
+    m_RemoveToCounterCmd = m_controllerManager.addCommand(new TestRemoveToCounterCmd());
+    m_SwitchJoyCmd = m_controllerManager.addCommand(new TestSwitchMainJoyCmd());
+    m_MainAddToCounterCmd = m_controllerManager.addCommand(new TestMainAddToCounterCmd());
+    m_MainRemoveToCounterCmd = m_controllerManager.addCommand(new TestMainRemoveToCounterCmd());
+
+    m_controllerManager.setupJoystickPressedButton(m_JoystickId1, 1);
+    m_controllerManager.setupJoystickPressedButton(m_JoystickId1, 2);
+    m_controllerManager.setupJoystickPressedButton(m_JoystickId1, 3);
+
+    m_controllerManager.setupJoystickPressedButton(m_JoystickId2, 1);
+    m_controllerManager.setupJoystickPressedButton(m_JoystickId2, 2);
+    m_controllerManager.setupJoystickPressedButton(m_JoystickId2, 3);
+
+    m_controllerManager.setupJoystickPressedButton(m_JoystickId3, 1);
+    m_controllerManager.setupJoystickPressedButton(m_JoystickId3, 2);
+    m_controllerManager.setupJoystickPressedButton(m_JoystickId3, 3);
+
+    //Default bindings
+    m_controllerManager.bindCommand(m_JoystickId1, m_AddToCounterCmd, 1);
+    m_controllerManager.bindCommand(m_JoystickId1, m_RemoveToCounterCmd, 2);
+
+    m_controllerManager.bindCommand(m_JoystickId2, m_MainAddToCounterCmd, 1);
+    m_controllerManager.bindCommand(m_JoystickId2, m_MainRemoveToCounterCmd, 2);
+    m_controllerManager.bindCommand(m_JoystickId2, m_SwitchJoyCmd, 3);
+
+    m_controllerManager.bindCommand(m_JoystickId3, m_AddToCounterCmd, 1);
+    m_controllerManager.bindCommand(m_JoystickId3, m_RemoveToCounterCmd, 2);
+  }
+
 }

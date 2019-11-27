@@ -12,7 +12,9 @@ import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.robot.detroit2019testcode.subsystems.WedgerSub;
 import frc.robot.subsystems.DriveBaseSub;
+import frc.robot.subsystems.testControllerSub;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -25,6 +27,8 @@ public class Robot extends TimedRobot {
   public static OI m_oi;
   public static RobotMap m_RobotMap;
   public static DriveBaseSub m_DriveBaseSub;
+  public static WedgerSub m_wedger;
+  public static testControllerSub m_TestConSub;
 
   Command m_autonomousCommand;
   SendableChooser<Command> m_chooser = new SendableChooser<>();
@@ -37,9 +41,14 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotInit() {
-    m_oi = new OI();
+    
     
     m_DriveBaseSub = new DriveBaseSub();
+
+    //This specific thing should not be used in comp, as it is more test code =D! btw TODO : comment this when done
+    m_wedger = new WedgerSub();
+    m_TestConSub = new testControllerSub();
+    m_oi = new OI();
 
     //m_chooser.setDefaultOption("Default Auto", new ExampleCommand());
     // chooser.addOption("My Auto", new MyAutoCommand());
