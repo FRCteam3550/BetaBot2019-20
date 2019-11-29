@@ -66,6 +66,7 @@ public class Robot extends TimedRobot {
   public void robotPeriodic() {
     SmartDashboard.putNumber("EncoderArm", m_wedger.getEncoder());
     SmartDashboard.putNumber("PositionArm", m_wedger.getPosition());
+    m_oi.m_ControlPreset.checkPresetChange();
   }
 
   /**

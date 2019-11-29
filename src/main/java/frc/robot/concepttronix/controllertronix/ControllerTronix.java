@@ -12,6 +12,7 @@ import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 import java.util.ArrayList;
 import frc.robot.concepttronix.controllertronix.commands.*;
@@ -37,9 +38,12 @@ public class ControllerTronix {
 
     private ArrayList<Integer> m_axisControllerUsed;
     private ArrayList<Integer> m_axisControllerPort;
+    private int m_axisControllerIndex;
 
     private ArrayList<Command> m_currentRunnableCommands;
     private int m_currentCommandId; //I could have used .size() instead, probably, again
+
+    private Boolean m_DebugMode; 
 
 
     public ControllerTronix () {
@@ -50,14 +54,17 @@ public class ControllerTronix {
         m_currentController = 0;
 
         m_axisControllerUsed = new ArrayList<Integer>();
-        m_axisControllerUsed.trimToSize();
+        //m_axisControllerUsed.trimToSize();
         m_axisControllerPort = new ArrayList<Integer>();
-        m_axisControllerPort.trimToSize();
+        //m_axisControllerPort.trimToSize();
+        m_axisControllerIndex = 0;
 
         //Set Commands
         m_currentRunnableCommands = new ArrayList<Command>();
         m_currentCommandId = 0;
         m_controllerCommandManager = new ArrayList<int[]>();
+
+        m_DebugMode = false;
     }
 
     /**
@@ -69,7 +76,7 @@ public class ControllerTronix {
      * @return
      */
     public int addNewControlMethod (String controllerType, int port, int maxButton) {
-        int controllerId = -1;
+        int controllerId;
         String type = "Joystick"; //ignore everything else for now, to remove later
         switch (type) {
             case "Joystick" : {
@@ -94,13 +101,20 @@ public class ControllerTronix {
 
                 m_currentController++;
 
+                if (m_DebugMode) {
+                    SmartDashboard.putString("Controller Last Type", "Joystick");
+                    SmartDashboard.putNumber("Controller Last Id", controllerId);
+                }
+
                 break;
             }
             case "Xbox" : {
                 //Since gamepads are concidered joysticks, we should ignore that value for now
+                controllerId = -1;
             }
             default : {
                 //Do nothing, might want to add an error handling
+                controllerId = -1;
             }
         }
         return controllerId; //Return the id of the controller
@@ -108,6 +122,10 @@ public class ControllerTronix {
 
     public GenericHID getControllerFromId(int ControllerId) {
         return m_controller.get(ControllerId);
+    }
+
+    public void ToggleSmartDashboardDebuging() {
+        m_DebugMode = !m_DebugMode;
     }
 
 
@@ -132,6 +150,9 @@ public class ControllerTronix {
     public int addCommand (Command command) {
         m_currentRunnableCommands.add(m_currentCommandId,command);
         m_currentCommandId++;
+        if (m_DebugMode) {
+            SmartDashboard.putNumber("Last Command Id", m_currentCommandId-1);
+        }
         return m_currentCommandId - 1;
     }
 
@@ -142,15 +163,23 @@ public class ControllerTronix {
      * @return the axisId for getAxis()
      */
     public int addAxis (int ControllerId ,int axis) {
-        m_axisControllerUsed.ensureCapacity(m_axisControllerUsed.size()+1);
+        m_axisControllerUsed.ensureCapacity(m_axisControllerIndex + 1);
         m_axisControllerUsed.add(ControllerId);
-        m_axisControllerPort.ensureCapacity(m_axisControllerPort.size()+1);
+        m_axisControllerPort.ensureCapacity(m_axisControllerIndex + 1);
         m_axisControllerPort.add(axis);
-        return m_axisControllerUsed.size() - 1;
+        if (m_DebugMode) {
+            SmartDashboard.putNumber("Last Axis Id", m_axisControllerIndex);
+            SmartDashboard.putNumber("Last Axis Controller", ControllerId);
+        }
+        m_axisControllerIndex++;
+        return m_axisControllerIndex - 1;
     }
 
     public Double getAxis (int axis) {
         double axisValue;
+        if (m_DebugMode) {
+            SmartDashboard.putNumber("GetAxis", axis);
+        }
         if (axis >= m_axisControllerUsed.size()) { //No crash
             int axisController = m_axisControllerUsed.get(axis);
             int axisPort = m_axisControllerPort.get(axis);
@@ -161,7 +190,10 @@ public class ControllerTronix {
             }
         } else {
             axisValue = 0;
-        }      
+        }   
+        if (m_DebugMode) {
+            SmartDashboard.putNumber("AxisValue", axisValue);
+        }   
         return axisValue;
     }
 
@@ -178,6 +210,7 @@ public class ControllerTronix {
         }
         m_axisControllerPort.clear();
         m_axisControllerUsed.clear();
+        m_axisControllerIndex = 0;
     }
 
     public void resetControllerBinding (int ControllerId) {
@@ -192,11 +225,7 @@ public class ControllerTronix {
     public void resetAxisBinding () {
         m_axisControllerUsed.clear();
         m_axisControllerPort.clear();
-    }
-
-    public void resetAxisBinding (int axis) {
-        m_axisControllerUsed.set(axis, -1);
-        m_axisControllerPort.set(axis, -1);
+        m_axisControllerIndex = 0;
     }
 
     /**
