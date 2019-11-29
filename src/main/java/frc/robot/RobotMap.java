@@ -41,7 +41,7 @@ public class RobotMap {
   public static final int m_PlateSensor = 0;
   public static final int m_PlateMotor = 3;
 
-  public static final int m_WedgerMotor = 12;
+  public static final int m_WedgerMotor = 3;
  // public static final int m_WedgerMobile = 7;
   
   // There are 90 motor turns in one pulse of this encoder, but how many do we need to turn the arm?

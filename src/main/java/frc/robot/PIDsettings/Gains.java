@@ -1,4 +1,4 @@
-package frc.robot.detroit2019testcode.PIDsettings;
+package frc.robot.PIDsettings;
 
 public class Gains {
 	public final double kP;

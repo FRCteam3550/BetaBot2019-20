@@ -5,42 +5,30 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-package frc.robot.commands.TestControllerCmd;
+package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.command.Command;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import frc.robot.subsystems.testControllerSub;
-import frc.robot.Robot;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
-public class TestAddToCounterCmd extends Command {
-
-  Boolean m_finished = false;
-  public TestAddToCounterCmd() {
+public class ArmDropPilule extends Command {
+  public ArmDropPilule() {
     // Use requires() here to declare subsystem dependencies
     // eg. requires(chassis);
-    requires(Robot.m_TestConSub);
   }
 
   // Called just before this Command runs the first time
   @Override
   protected void initialize() {
-    double test111 = SmartDashboard.getNumber("Test111", 0);
-    test111++;
-    SmartDashboard.putNumber("Test111",test111);
-    }
+  }
 
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    Robot.m_TestConSub.addToDisplay(1);
-    m_finished = true;
   }
 
   // Make this return true when this Command no longer needs to run execute()
   @Override
   protected boolean isFinished() {
-    return m_finished;
+    return false;
   }
 
   // Called once after isFinished returns true

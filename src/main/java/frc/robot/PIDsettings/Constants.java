@@ -1,4 +1,4 @@
-package frc.robot.detroit2019testcode.PIDsettings;
+package frc.robot.PIDsettings;
 
 public class Constants {
 
@@ -141,13 +141,13 @@ public class Constants {
 	 public static final int kTimeoutMsWedger1  = 10;
  
 	 //acceleration and velocity for slot 1
-	 public static final int kCruiseVelocityWedger1  = 25000;
+	 public static final int kCruiseVelocityWedger1  = 20000; //25000
 	 public static final int kAccelerationVWedger1  = 15000;
  
 	 //gains for slot1
 	 public static final Gains kGainsWedger1  = new Gains(20 , 0.0, 0.0, 0, 0, 1.0);
  
-	 public static final double Wedger1  =700;
+	 public static final double Wedger1  =-1637;
 
 
 //**************************************************************************************************** */
@@ -180,13 +180,14 @@ public class Constants {
 	 public static final int kTimeoutMsWedger0  = 10;
  
 	 //acceleration and velocity for slot 0
-	 public static final int kCruiseVelocityWedger0  = 25000;
-	 public static final int kAccelerationVWedger0  = 25000;
+	 public static final int kCruiseVelocityWedger0  = 10000; //25000
+	 public static final int kAccelerationVWedger0  = 10000; //25000
  
 	 //gains for slot0
 	 public static final Gains kGainsWedger0  = new Gains(0.2, 0.0, 0.0, 2, 0, 1.0);
  
-	 public static final double Wedger0  = 300; //
+	 //public static final double Wedger0  = -1500; //
+	 public static final double Wedger0  = 0; //
 
 
 

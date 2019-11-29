@@ -32,12 +32,14 @@ public class ControllerTronix {
     private ArrayList<GenericHID> m_controller;
     private ArrayList<String> m_controllerType;
     private ArrayList<Integer> m_controllerMaxButton;
-    private int m_currentController;
+    private int m_currentController; //I could have used .size() instead, probably
     private ArrayList<int[]> m_controllerCommandManager;
 
+    private ArrayList<Integer> m_axisControllerUsed;
+    private ArrayList<Integer> m_axisControllerPort;
 
     private ArrayList<Command> m_currentRunnableCommands;
-    private int m_currentCommandId;
+    private int m_currentCommandId; //I could have used .size() instead, probably, again
 
 
     public ControllerTronix () {
@@ -46,6 +48,11 @@ public class ControllerTronix {
         m_controllerType = new ArrayList<String>();
         m_controllerMaxButton = new ArrayList<Integer>();
         m_currentController = 0;
+
+        m_axisControllerUsed = new ArrayList<Integer>();
+        m_axisControllerUsed.trimToSize();
+        m_axisControllerPort = new ArrayList<Integer>();
+        m_axisControllerPort.trimToSize();
 
         //Set Commands
         m_currentRunnableCommands = new ArrayList<Command>();
@@ -63,7 +70,7 @@ public class ControllerTronix {
      */
     public int addNewControlMethod (String controllerType, int port, int maxButton) {
         int controllerId = -1;
-        String type = "Joystick"; //ignore everything else
+        String type = "Joystick"; //ignore everything else for now, to remove later
         switch (type) {
             case "Joystick" : {
                 Joystick newJoy = new Joystick(port);
@@ -103,6 +110,7 @@ public class ControllerTronix {
         return m_controller.get(ControllerId);
     }
 
+
     /**
      * Removed since we are no longer using the Pilot CoPilot Formula (Was to complicated, tbh)
     public void addControllerToPilot (int id) {
@@ -127,6 +135,36 @@ public class ControllerTronix {
         return m_currentCommandId - 1;
     }
 
+    /**
+     * While we only support one joystick per axis, an interesting path foward would be to support multiple axis per axis
+     * @param ControllerId
+     * @param axis
+     * @return the axisId for getAxis()
+     */
+    public int addAxis (int ControllerId ,int axis) {
+        m_axisControllerUsed.ensureCapacity(m_axisControllerUsed.size()+1);
+        m_axisControllerUsed.add(ControllerId);
+        m_axisControllerPort.ensureCapacity(m_axisControllerPort.size()+1);
+        m_axisControllerPort.add(axis);
+        return m_axisControllerUsed.size() - 1;
+    }
+
+    public Double getAxis (int axis) {
+        double axisValue;
+        if (axis >= m_axisControllerUsed.size()) { //No crash
+            int axisController = m_axisControllerUsed.get(axis);
+            int axisPort = m_axisControllerPort.get(axis);
+            if ((axisController != -1) && (axisPort != -1)) {
+                axisValue = getControllerFromId(axisController).getRawAxis(axisPort);
+            } else {
+                axisValue = 0;
+            }
+        } else {
+            axisValue = 0;
+        }      
+        return axisValue;
+    }
+
     public void resetBindings () {
         for (int i = 0; i < m_controllerCommandManager.size(); i++) { //this should remove all of the commands everywhere
             
@@ -138,6 +176,8 @@ public class ControllerTronix {
             }
             m_controllerCommandManager.set(i,ToClear);
         }
+        m_axisControllerPort.clear();
+        m_axisControllerUsed.clear();
     }
 
     public void resetControllerBinding (int ControllerId) {
@@ -147,6 +187,16 @@ public class ControllerTronix {
             ToClear[j] = -1;
         }
         m_controllerCommandManager.set(ControllerId,ToClear);
+    }
+
+    public void resetAxisBinding () {
+        m_axisControllerUsed.clear();
+        m_axisControllerPort.clear();
+    }
+
+    public void resetAxisBinding (int axis) {
+        m_axisControllerUsed.set(axis, -1);
+        m_axisControllerPort.set(axis, -1);
     }
 
     /**

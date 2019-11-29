@@ -5,24 +5,24 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-package frc.robot.detroit2019testcode.subsystems;
+package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 
 
-import frc.robot.detroit2019testcode.PIDsettings.Constants;
+import frc.robot.PIDsettings.Constants;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.RobotMap;
-import frc.robot.detroit2019testcode.commands.StopWedger;
+import frc.robot.commands.StopWedger;
 import com.ctre.phoenix.motorcontrol.StatusFrameEnhanced;
 import com.ctre.phoenix.motorcontrol.LimitSwitchSource;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.LimitSwitchNormal;
-import frc.robot.detroit2019testcode.commands.StopWedger;
-import frc.robot.detroit2019testcode.commands.WedgerManual;
+import frc.robot.commands.StopWedger;
+import frc.robot.commands.WedgerManual;
 
 /**
  * Add your docs here.
