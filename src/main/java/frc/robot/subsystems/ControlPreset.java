@@ -72,21 +72,21 @@ public class ControlPreset extends Subsystem {
   public void XboxTankPreset () {
     m_CurrentDrivingMode = "TankDrive";
     m_oi.m_controllerManager.resetBindings();
-    m_oi.m_controllerManager.bindCommand(m_oi.m_JoystickController, m_oi.m_wedgerInitial, 0);
-    m_oi.m_controllerManager.bindCommand(m_oi.m_JoystickController, m_oi.m_wedgerPos1, 1);
+    m_oi.m_controllerManager.bindCommand(m_oi.m_JoystickController, m_oi.m_wedgerInitial, 1);
+    m_oi.m_controllerManager.bindCommand(m_oi.m_JoystickController, m_oi.m_wedgerPos1, 2);
     m_oi.m_controllerManager.addAxis(m_oi.m_XboxController, 0); //axis 0
     m_oi.m_controllerManager.addAxis(m_oi.m_XboxController, 4); //axis 1
-    SmartDashboard.putString("CurrentDriveMode", m_CurrentDrivingMode);
+    //SmartDashboard.putString("CurrentDriveMode", m_CurrentDrivingMode);
   }
 
   public void XboxPlatoPreset () {
     m_CurrentDrivingMode = "ArcadePlatoDrive";
     m_oi.m_controllerManager.resetBindings();
-    m_oi.m_controllerManager.bindCommand(m_oi.m_JoystickController, m_oi.m_wedgerInitial, 0);
-    m_oi.m_controllerManager.bindCommand(m_oi.m_JoystickController, m_oi.m_wedgerPos1, 1);
+    m_oi.m_controllerManager.bindCommand(m_oi.m_JoystickController, m_oi.m_wedgerInitial, 1);
+    m_oi.m_controllerManager.bindCommand(m_oi.m_JoystickController, m_oi.m_wedgerPos1, 2);
     m_oi.m_controllerManager.addAxis(m_oi.m_XboxController, 1); //axis 0
     m_oi.m_controllerManager.addAxis(m_oi.m_XboxController, 4); //axis 1
-    SmartDashboard.putString("CurrentDriveMode", m_CurrentDrivingMode);
+    //SmartDashboard.putString("CurrentDriveMode", m_CurrentDrivingMode);
   }
 
   public void JoyArcadePreset () {
@@ -96,11 +96,57 @@ public class ControlPreset extends Subsystem {
     m_oi.m_controllerManager.bindCommand(m_oi.m_XboxController, m_oi.m_wedgerPos1, 2);
     m_oi.m_controllerManager.addAxis(m_oi.m_XboxController, 0); //axis 0
     m_oi.m_controllerManager.addAxis(m_oi.m_XboxController, 1); //axis 1
-    SmartDashboard.putString("CurrentDriveMode", m_CurrentDrivingMode);
+    //SmartDashboard.putString("CurrentDriveMode", m_CurrentDrivingMode);
   }
 
   public String GetDriveMode () {
     return m_CurrentDrivingMode;
+  }
+
+  public double GetJoy0 () {
+    double AxissValue;
+    switch (m_CurrentDrivingMode) {
+      case ("ArcadeDrive") : {
+        AxissValue = m_oi.m_controllerManager.getControllerFromId(m_oi.m_JoystickController).getRawAxis(2);
+        break;
+      }
+      case ("ArcadePlatoDrive") : {
+        AxissValue = m_oi.m_controllerManager.getControllerFromId(m_oi.m_XboxController).getRawAxis(4);
+        break;
+      }
+      case ("TankDrive") : {
+        AxissValue = m_oi.m_controllerManager.getControllerFromId(m_oi.m_XboxController).getRawAxis(5);
+        break;
+      }
+      default : {
+        AxissValue = 0;
+        break;
+      }
+    }
+    return AxissValue;
+  }
+
+  public double GetJoy1 () {
+    double AxissValue;
+    switch (m_CurrentDrivingMode) {
+      case ("ArcadeDrive") : {
+        AxissValue = m_oi.m_controllerManager.getControllerFromId(m_oi.m_JoystickController).getRawAxis(1);
+        break;
+      }
+      case ("ArcadePlatoDrive") : {
+        AxissValue = m_oi.m_controllerManager.getControllerFromId(m_oi.m_XboxController).getRawAxis(1);
+        break;
+      }
+      case ("TankDrive") : {
+        AxissValue = -m_oi.m_controllerManager.getControllerFromId(m_oi.m_XboxController).getRawAxis(1);
+        break;
+      }
+      default : {
+        AxissValue = 0;
+        break;
+      }
+    }
+    return AxissValue;
   }
 
 }

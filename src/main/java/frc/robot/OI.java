@@ -104,9 +104,9 @@ public class OI {
 
   public OI () {
     m_controllerManager = new ControllerTronix();
-    m_controllerManager.ToggleSmartDashboardDebuging();
-    m_JoystickController = m_controllerManager.addNewControlMethod("Joystick", 0, 12);
+    //m_controllerManager.ToggleSmartDashboardDebuging();
     m_XboxController = m_controllerManager.addNewControlMethod("Xbox", 1, 12);
+    m_JoystickController = m_controllerManager.addNewControlMethod("Joystick", 2, 12);
 
     //m_AddToCounterCmd = m_controllerManager.addCommand(new TestAddToCounterCmd());
     //m_RemoveToCounterCmd = m_controllerManager.addCommand(new TestRemoveToCounterCmd());
@@ -125,8 +125,8 @@ public class OI {
     m_wedgerInitial = m_controllerManager.addCommand(new WadgerInitial(Constants.Wedger0));
     m_wedgerPos1 = m_controllerManager.addCommand(new WedgerPos1(Constants.Wedger1));
 
-    m_controllerManager.setupJoystickPressedButton(m_JoystickController, 3);
-    m_controllerManager.setupJoystickPressedButton(m_JoystickController, 4);
+    m_controllerManager.setupJoystickPressedButton(m_JoystickController, 1);
+    m_controllerManager.setupJoystickPressedButton(m_JoystickController, 2);
 
     //https://github.com/wpilibsuite/allwpilib/blob/master/wpilibj/src/main/java/edu/wpi/first/wpilibj/XboxController.java
     m_controllerManager.setupJoystickPressedButton(m_XboxController, 1); //A

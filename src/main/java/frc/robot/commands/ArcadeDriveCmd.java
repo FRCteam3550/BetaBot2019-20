@@ -33,15 +33,15 @@ public class ArcadeDriveCmd extends Command {
     //m_DriveBaseSub.arcadeDrive(Robot.m_oi.driverXAxis(), Robot.m_oi.driverYAxis());
     switch (Robot.m_oi.m_ControlPreset.GetDriveMode()) {
       case ("TankDrive") : {
-        m_DriveBaseSub.tankDrive(Robot.m_oi.m_controllerManager.getAxis(0), Robot.m_oi.m_controllerManager.getAxis(1));
+        m_DriveBaseSub.tankDrive(Robot.m_oi.m_ControlPreset.GetJoy0(), Robot.m_oi.m_ControlPreset.GetJoy1());
         break;
       }
       case ("ArcadePlatoDrive") : {
-        m_DriveBaseSub.arcadeDrive(Robot.m_oi.m_controllerManager.getAxis(0), Robot.m_oi.m_controllerManager.getAxis(1));
+        m_DriveBaseSub.arcadeDrive(Robot.m_oi.m_ControlPreset.GetJoy0(), Robot.m_oi.m_ControlPreset.GetJoy1());
       break;
       }
       case ("ArcadeDrive") : {
-        m_DriveBaseSub.arcadeDrive(Robot.m_oi.m_controllerManager.getAxis(0), Robot.m_oi.m_controllerManager.getAxis(1));
+        m_DriveBaseSub.arcadeDrive(Robot.m_oi.m_ControlPreset.GetJoy0(), Robot.m_oi.m_ControlPreset.GetJoy1());
         break;
       }
     }
