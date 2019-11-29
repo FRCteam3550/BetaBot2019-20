@@ -12,10 +12,10 @@ import frc.robot.subsystems.DriveBaseSub;
 import frc.robot.Robot;
 import frc.robot.OI;
 
-public class ArcadeDriveCmd extends Command {
+public class AutoDrive extends Command {
   public DriveBaseSub m_DriveBaseSub;
   
-  public ArcadeDriveCmd() {
+  public AutoDrive() {
     m_DriveBaseSub = Robot.m_DriveBaseSub;
     requires(m_DriveBaseSub);
   }
@@ -23,34 +23,20 @@ public class ArcadeDriveCmd extends Command {
   // Called just before this Command runs the first time
   @Override
   protected void initialize() {
+    setTimeout(6.5);
   }
 
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
     //This is really the bare minimum. If we want, we can add back the multiple drive mode.
-
-    //m_DriveBaseSub.arcadeDrive(Robot.m_oi.driverXAxis(), Robot.m_oi.driverYAxis());
-    switch (Robot.m_oi.m_ControlPreset.GetDriveMode()) {
-      case ("TankDrive") : {
-        m_DriveBaseSub.tankDrive(Robot.m_oi.m_controllerManager.getAxis(0), Robot.m_oi.m_controllerManager.getAxis(1));
-        break;
-      }
-      case ("ArcadePlatoDrive") : {
-        m_DriveBaseSub.arcadeDrive(Robot.m_oi.m_controllerManager.getAxis(0), Robot.m_oi.m_controllerManager.getAxis(1));
-      break;
-      }
-      case ("ArcadeDrive") : {
-        m_DriveBaseSub.arcadeDrive(Robot.m_oi.m_controllerManager.getAxis(0), Robot.m_oi.m_controllerManager.getAxis(1));
-        break;
-      }
-    }
+    m_DriveBaseSub.arcadeDrive(0.25, 0.5);
   }
 
   // Make this return true when this Command no longer needs to run execute()
   @Override
   protected boolean isFinished() {
-    return false;
+    return isTimedOut();
   }
 
   // Called once after isFinished returns true
