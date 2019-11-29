@@ -49,7 +49,7 @@ public class Robot extends TimedRobot {
     m_wedger = new WedgerSub();
     m_oi = new OI();
 
-    m_chooser.setDefaultOption("Default Auto", new Auto2());
+    m_chooser.setDefaultOption("Default Auto", new AutoDrive());
 
     // chooser.addOption("My Auto", new MyAutoCommand());
     //SmartDashboard.putData("Auto mode", m_chooser);
@@ -68,8 +68,11 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotPeriodic() {
-    SmartDashboard.putNumber("EncoderArm", m_wedger.getEncoder());
-    SmartDashboard.putNumber("PositionArm", m_wedger.getPosition());
+    //SmartDashboard.putNumber("EncoderArm", m_wedger.getEncoder());
+    //SmartDashboard.putNumber("PositionArm", m_wedger.getPosition());
+    m_oi.m_ControlPreset.checkPresetChange();
+    //SmartDashboard.putNumber("Joystick Axis 0", m_oi.m_controllerManager.getAxis(0));
+    //SmartDashboard.putNumber("Joystick Axis 1", m_oi.m_controllerManager.getAxis(1));
   }
 
   /**

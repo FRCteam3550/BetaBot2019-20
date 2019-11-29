@@ -7,6 +7,7 @@
 
 package frc.robot;
 
+import edu.wpi.first.wpilibj.Controller;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
@@ -14,7 +15,7 @@ import edu.wpi.first.wpilibj.buttons.Button;
 import frc.robot.commands.ArmDropFast;
 import frc.robot.commands.ArmDropPilule;
 import frc.robot.concepttronix.controllertronix.ControllerTronix;
-//import frc.robot.subsystems.ControlPreset;
+import frc.robot.subsystems.ControlPreset;
 
 //This is a list of test imports, please remove later
 import frc.robot.commands.WadgerInitial;
@@ -54,7 +55,7 @@ public class OI {
   // until it is finished as determined by it's isFinished method.
   // button.whenReleased(new ExampleCommand());
 
-  
+  /**
   private final Joystick m_DriverJoystick;
   private final Joystick m_CoDriverJoystick;
   //private final XboxController m_DriverXbox;
@@ -85,8 +86,8 @@ public class OI {
     return m_DriverJoystick.getY();
   } 
   
+  */
 
-  /**
   public ControllerTronix m_controllerManager;
   public int m_JoystickController;
   public int m_XboxController;
@@ -98,13 +99,14 @@ public class OI {
   //public int m_MainAddToCounterCmd;
   //public int m_MainRemoveToCounterCmd;
 
-  public int m_SlowDropCmd;
-  public int m_FastDropCmd;
+  public int m_wedgerInitial;
+  public int m_wedgerPos1;
 
   public OI () {
     m_controllerManager = new ControllerTronix();
-    m_JoystickController = m_controllerManager.addNewControlMethod("Joystick", 0, 12);
+    //m_controllerManager.ToggleSmartDashboardDebuging();
     m_XboxController = m_controllerManager.addNewControlMethod("Xbox", 1, 12);
+    m_JoystickController = m_controllerManager.addNewControlMethod("Joystick", 2, 12);
 
     //m_AddToCounterCmd = m_controllerManager.addCommand(new TestAddToCounterCmd());
     //m_RemoveToCounterCmd = m_controllerManager.addCommand(new TestRemoveToCounterCmd());
@@ -120,19 +122,25 @@ public class OI {
     //m_controllerManager.setupJoystickPressedButton(m_JoystickId2, 2);
     //m_controllerManager.setupJoystickPressedButton(m_JoystickId2, 3);
 
-    m_SlowDropCmd = m_controllerManager.addCommand(new ArmDropPilule());
-    m_FastDropCmd = m_controllerManager.addCommand(new ArmDropFast());
+    m_wedgerInitial = m_controllerManager.addCommand(new WadgerInitial(Constants.Wedger0));
+    m_wedgerPos1 = m_controllerManager.addCommand(new WedgerPos1(Constants.Wedger1));
 
-    m_controllerManager.setupJoystickPressedButton(m_JoystickController, 3);
-    m_controllerManager.setupJoystickPressedButton(m_JoystickController, 4);
+    m_controllerManager.setupJoystickPressedButton(m_JoystickController, 1);
+    m_controllerManager.setupJoystickPressedButton(m_JoystickController, 2);
 
     //https://github.com/wpilibsuite/allwpilib/blob/master/wpilibj/src/main/java/edu/wpi/first/wpilibj/XboxController.java
     m_controllerManager.setupJoystickPressedButton(m_XboxController, 1); //A
     m_controllerManager.setupJoystickPressedButton(m_XboxController, 2); //B
 
-    m_ControlPreset = new ControlPreset();
+    
+
+    m_ControlPreset = new ControlPreset(this);
     
   }
-  */
+
+  public ControllerTronix getControllerManager() {
+    return m_controllerManager;
+  }
+
 
 }
