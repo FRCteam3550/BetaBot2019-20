@@ -29,7 +29,7 @@ public class ArcadeDriveCmd extends Command {
   @Override
   protected void execute() {
     //This is really the bare minimum. If we want, we can add back the multiple drive mode.
-    m_DriveBaseSub.arcadeDrive(Robot.m_oi.driverXAxis(), Robot.m_oi.driverYAxis());
+    m_DriveBaseSub.arcadeDrive(Robot.m_oi.driverXAxis(), -Robot.m_oi.driverYAxis());
   }
 
   // Make this return true when this Command no longer needs to run execute()

@@ -13,6 +13,8 @@ import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.subsystems.WedgerSub;
+import frc.robot.commands.Auto2;
+import frc.robot.commands.AutoDrive;
 import frc.robot.subsystems.DriveBaseSub;
 
 /**
@@ -47,9 +49,11 @@ public class Robot extends TimedRobot {
     m_wedger = new WedgerSub();
     m_oi = new OI();
 
-    //m_chooser.setDefaultOption("Default Auto", new ExampleCommand());
+    m_chooser.setDefaultOption("Default Auto", new Auto2());
+
     // chooser.addOption("My Auto", new MyAutoCommand());
     //SmartDashboard.putData("Auto mode", m_chooser);
+
 
     
   }
@@ -116,6 +120,7 @@ public class Robot extends TimedRobot {
   @Override
   public void autonomousPeriodic() {
     Scheduler.getInstance().run();
+    
   }
 
   @Override

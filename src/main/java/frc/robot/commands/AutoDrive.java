@@ -5,62 +5,43 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-package frc.robot.commands.ControlPresets;
+package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.command.Command;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-
-import frc.robot.subsystems.ControlPreset;
+import frc.robot.subsystems.DriveBaseSub;
 import frc.robot.Robot;
+import frc.robot.OI;
 
-public class ControlPresetCheckCmd extends Command {
-  Boolean m_finished = false;
-  public ControlPresetCheckCmd() {
-    // Use requires() here to declare subsystem dependencies
-    // eg. requires(chassis);
-    // requires(Robot.m_oi.m_ControlPreset);
+public class AutoDrive extends Command {
+  public DriveBaseSub m_DriveBaseSub;
+  
+  public AutoDrive() {
+    m_DriveBaseSub = Robot.m_DriveBaseSub;
+    requires(m_DriveBaseSub);
   }
 
   // Called just before this Command runs the first time
   @Override
   protected void initialize() {
-    m_finished = false;
+    setTimeout(6.5);
   }
 
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    String result = Robot.m_oi.m_ControlPreset.m_ControlChooser.getSelected();
-    switch (result) {
-      case "XboxTank" : {
-        Robot.m_oi.m_ControlPreset.XboxTankPreset();
-        break;
-      }
-      case "XboxPlato" : {
-        Robot.m_oi.m_ControlPreset.XboxPlatoPreset();
-        break;
-      }
-      case "JoyArcade" : {
-        Robot.m_oi.m_ControlPreset.JoyArcadePreset();
-        break;
-      }
-      default : {
-        break;
-      }
-    }
-    m_finished = true;
+    //This is really the bare minimum. If we want, we can add back the multiple drive mode.
+    m_DriveBaseSub.arcadeDrive(0.25, 0.5);
   }
 
   // Make this return true when this Command no longer needs to run execute()
   @Override
   protected boolean isFinished() {
-    return m_finished;
+    return isTimedOut();
   }
 
   // Called once after isFinished returns true
   @Override
   protected void end() {
-    m_finished = false;
   }
 
   // Called when another command which requires one or more of the same

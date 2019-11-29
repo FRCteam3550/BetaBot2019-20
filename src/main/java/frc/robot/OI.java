@@ -78,11 +78,11 @@ public class OI {
   }
 
   public double driverXAxis() {
-    return -m_DriverJoystick.getX();
+    return m_DriverJoystick.getX();
   }
 
   public double driverYAxis() {
-    return -m_DriverJoystick.getY();
+    return m_DriverJoystick.getY();
   } 
   
 
